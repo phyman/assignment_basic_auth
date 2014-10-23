@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+# A very simple auth mechanism
+  http_basic_authenticate_with name: "phyman",
+                                                 password: "hardpwd",
+                                                 only: [:update , :create]
+
   # GET /users
   # GET /users.json
   def index
