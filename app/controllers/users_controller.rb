@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-# A very simple auth mechanism
-  http_basic_authenticate_with name: "phyman",
-                                                 password: "hardpwd",
-                                                 only: [:update , :create]
+USERS = {"Paul" => "pwd"}
+
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate
 
   # GET /users
   # GET /users.json
@@ -76,4 +75,11 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :email)
     end
+
+    def authenticate
+      authenticate_or_request_with_http_digest('You must log in') do |username|
+        USERS[username]
+      end
+    end
+
 end
